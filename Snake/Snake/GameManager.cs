@@ -9,6 +9,8 @@ namespace Snake
     public class GameManager
     {
         public const int BLOCK_WIDTH = 20;
+        public const int SCREEN_WIDTH = 800;
+        public const int SCREEN_HEIGHT = 600;
         public static float TICK = 0.1f;
 
         public double TimeSinceLastTick { get; set; } = 0f;

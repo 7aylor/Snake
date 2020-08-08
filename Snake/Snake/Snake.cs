@@ -48,18 +48,51 @@ namespace Snake
             switch (PrevDirection)
             {
                 case (Direction.Left):
-                    Body[0].Position = Body[0].Position + (Vector2.UnitX * -GameManager.BLOCK_WIDTH);
+                    if(Body[0].Position.X - GameManager.BLOCK_WIDTH < 0)
+                    {
+                        Body[0].Position = new Vector2(GameManager.SCREEN_WIDTH - GameManager.BLOCK_WIDTH, Body[0].Position.Y);
+                    }
+                    else
+                    {
+                        Body[0].Position = Body[0].Position + (Vector2.UnitX * -GameManager.BLOCK_WIDTH);
+                    }
                     break;
                 case (Direction.Up):
-                    Body[0].Position = Body[0].Position + (Vector2.UnitY * -GameManager.BLOCK_WIDTH);
+                    if (Body[0].Position.Y - GameManager.BLOCK_WIDTH < 0)
+                    {
+                        Body[0].Position = new Vector2(Body[0].Position.X, GameManager.SCREEN_HEIGHT - GameManager.BLOCK_WIDTH);
+                    }
+                    else
+                    {
+                        Body[0].Position = Body[0].Position + (Vector2.UnitY * -GameManager.BLOCK_WIDTH);
+                    }
                     break;
                 case (Direction.Right):
-                    Body[0].Position = Body[0].Position + (Vector2.UnitX * GameManager.BLOCK_WIDTH);
+                    if (Body[0].Position.X + GameManager.BLOCK_WIDTH > GameManager.SCREEN_WIDTH)
+                    {
+                        Body[0].Position = new Vector2(0, Body[0].Position.Y);
+                    }
+                    else
+                    {
+                        Body[0].Position = Body[0].Position + (Vector2.UnitX * GameManager.BLOCK_WIDTH);
+                    }
                     break;
                 case (Direction.Down):
-                    Body[0].Position = Body[0].Position + (Vector2.UnitY * GameManager.BLOCK_WIDTH);
+                    if (Body[0].Position.Y + GameManager.BLOCK_WIDTH > GameManager.SCREEN_HEIGHT)
+                    {
+                        Body[0].Position = new Vector2(Body[0].Position.X, 0);
+                    }
+                    else
+                    {
+                        Body[0].Position = Body[0].Position + (Vector2.UnitY * GameManager.BLOCK_WIDTH);
+                    }
                     break;
             }
+        }
+
+        private void moveHead()
+        {
+
         }
 
         /// <summary>

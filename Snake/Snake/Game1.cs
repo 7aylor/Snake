@@ -21,6 +21,8 @@ namespace Snake
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = GameManager.SCREEN_WIDTH;
+            graphics.PreferredBackBufferHeight = GameManager.SCREEN_HEIGHT;
             Content.RootDirectory = "Content";
         }
 
