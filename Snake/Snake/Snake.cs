@@ -22,7 +22,7 @@ namespace Snake
         {
             Body = new List<BodyBlock>();
             PrevDirection = Direction.Right;
-            for (int i = 4; i > 0; i--)
+            for (int i = 8; i > 0; i--)
             {
                 //TODO: Make initialization vary with random start direction and axis
                 Body.Add(new BodyBlock(Direction.Left, new Vector2(0 + (float)(i * GameManager.BLOCK_WIDTH), 300)));
@@ -90,9 +90,30 @@ namespace Snake
             }
         }
 
-        private void moveHead()
+        public void Grow()
         {
+            Vector2 newBlockPos = Vector2.One;
+            BodyBlock prevBlock = Body[Body.Count - 1];
+            switch (prevBlock.Direction)
+            {
+                case (Direction.Left):
+                    newBlockPos = new Vector2(prevBlock.Position.X - GameManager.BLOCK_WIDTH, prevBlock.Position.Y);
+                    break;
+                case (Direction.Up):
+                    newBlockPos = new Vector2(prevBlock.Position.X, prevBlock.Position.Y - GameManager.BLOCK_WIDTH);
+                    break;
+                case (Direction.Right):
+                    newBlockPos = new Vector2(prevBlock.Position.X + GameManager.BLOCK_WIDTH, prevBlock.Position.Y);
+                    break;
+                case (Direction.Down):
+                    newBlockPos = new Vector2(prevBlock.Position.X, prevBlock.Position.Y + GameManager.BLOCK_WIDTH);
+                    break;
+            }
 
+
+            BodyBlock newBlock = new BodyBlock(prevBlock.Direction, newBlockPos);
+
+            Body.Add(newBlock);
         }
 
         /// <summary>
@@ -130,5 +151,6 @@ namespace Snake
                 sb.Draw(sprite, new Rectangle((int)bodyBlock.Position.X + 1, (int)bodyBlock.Position.Y + 1, GameManager.BLOCK_WIDTH - 2, GameManager.BLOCK_WIDTH - 2), Color.White);
             }
         }
+
     }
 }

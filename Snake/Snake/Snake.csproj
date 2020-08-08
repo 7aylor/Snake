@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Apple.cs" />
     <Compile Include="Body.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameManager.cs" />

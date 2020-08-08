@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections;
+using System.Linq;
 
 namespace Snake
 {
@@ -15,8 +17,10 @@ namespace Snake
 
         SpriteBatch spriteBatch;
         Snake snake;
+        Apple apple;
         Texture2D whitePixel;
-        Direction newDirection;
+        Direction newDirection; //caches the new direction so it is maintained if a button isn't pressed
+
 
         public Game1()
         {
@@ -39,6 +43,7 @@ namespace Snake
             gameManager = new GameManager();
             inputManager = new InputManager();
             newDirection = Direction.None;
+            apple = new Apple(snake.Body.Select(x => x.Position).ToArray(), false); 
             base.Initialize();
         }
 
@@ -83,6 +88,11 @@ namespace Snake
             if(gameManager.Tick(gameTime.ElapsedGameTime.TotalSeconds))
             {
                 snake.Move(newDirection);
+                if(gameManager.CheckCollision(snake.Body[0].Position, apple.Position))
+                {
+                    apple.DropApple(snake.Body.Select(x => x.Position).ToArray());
+                    snake.Grow();
+                }
             }
 
             base.Update(gameTime);
@@ -94,12 +104,12 @@ namespace Snake
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
 
+            apple.Draw(spriteBatch, whitePixel);
             snake.Draw(spriteBatch, whitePixel);
-
             spriteBatch.End();
 
             base.Draw(gameTime);
