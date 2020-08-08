@@ -11,9 +11,12 @@ namespace Snake
     {
         GraphicsDeviceManager graphics;
         GameManager gameManager;
+        InputManager inputManager;
+
         SpriteBatch spriteBatch;
         Snake snake;
         Texture2D whitePixel;
+        Direction newDirection;
 
         public Game1()
         {
@@ -32,6 +35,8 @@ namespace Snake
             // TODO: Add your initialization logic here
             snake = new Snake();
             gameManager = new GameManager();
+            inputManager = new InputManager();
+            newDirection = Direction.None;
             base.Initialize();
         }
 
@@ -68,9 +73,14 @@ namespace Snake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+
+            //handle key press
+            if(inputManager.WasKeyPressed())
+                newDirection = inputManager.GetDirectionFromValidInput();
+
             if(gameManager.Tick(gameTime.ElapsedGameTime.TotalSeconds))
             {
-                snake.Move();
+                snake.Move(newDirection);
             }
 
             base.Update(gameTime);

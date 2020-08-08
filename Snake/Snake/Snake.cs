@@ -10,33 +10,82 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Snake
 {
-    public enum Direction { Up, Down, Left, Right }
+    public enum Direction { Up, Down, Left, Right, None }
 
     class Snake
     {
-
         public List<BodyBlock> Body { get; set; }
         public int Score { get; set; }
+        public Direction PrevDirection { get; set; }
 
         public Snake()
         {
             Body = new List<BodyBlock>();
-            for (int i = 0; i < 4; i++)
+            PrevDirection = Direction.Right;
+            for (int i = 4; i > 0; i--)
             {
                 //TODO: Make initialization vary with random start direction and axis
                 Body.Add(new BodyBlock(Direction.Left, new Vector2(0 + (float)(i * GameManager.BLOCK_WIDTH), 300)));
             }
         }
 
-        public void Move()
+        /// <summary>
+        /// Move the snake, block by block
+        /// </summary>
+        /// <param name="newDirection"></param>
+        public void Move(Direction newDirection)
         {
-            foreach(var bodyBlock in Body)
+            if (newDirection != Direction.None && IsValidDirection(newDirection)) PrevDirection = newDirection;
+
+            for (int i = Body.Count - 1; i > 0; i--)
             {
-                var prevPos = bodyBlock.Position;
-                bodyBlock.Position = new Vector2(prevPos.X + GameManager.BLOCK_WIDTH, prevPos.Y);
+                Body[i].Direction = Body[i - 1].Direction;
+                Body[i].Position = Body[i - 1].Position;
+            }
+
+            Body[0].Direction = PrevDirection;
+
+            switch (PrevDirection)
+            {
+                case (Direction.Left):
+                    Body[0].Position = Body[0].Position + (Vector2.UnitX * -GameManager.BLOCK_WIDTH);
+                    break;
+                case (Direction.Up):
+                    Body[0].Position = Body[0].Position + (Vector2.UnitY * -GameManager.BLOCK_WIDTH);
+                    break;
+                case (Direction.Right):
+                    Body[0].Position = Body[0].Position + (Vector2.UnitX * GameManager.BLOCK_WIDTH);
+                    break;
+                case (Direction.Down):
+                    Body[0].Position = Body[0].Position + (Vector2.UnitY * GameManager.BLOCK_WIDTH);
+                    break;
             }
         }
 
+        /// <summary>
+        /// ensures that the snake can go in the same or opposite direction as the previous direction
+        /// </summary>
+        /// <param name="newDirection"></param>
+        /// <returns></returns>
+        private bool IsValidDirection(Direction newDirection)
+        {
+            if(PrevDirection == Direction.Left || PrevDirection == Direction.Right)
+            {
+                return newDirection == Direction.Up || newDirection == Direction.Down;
+            }
+            else if (PrevDirection == Direction.Up || PrevDirection == Direction.Down)
+            {
+                return newDirection == Direction.Left || newDirection == Direction.Right;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// draw the snake, block by block
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="sprite"></param>
         public void Draw(SpriteBatch sb, Texture2D sprite)
         {
             foreach (var bodyBlock in Body)

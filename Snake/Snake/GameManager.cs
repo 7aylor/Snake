@@ -9,7 +9,7 @@ namespace Snake
     public class GameManager
     {
         public const int BLOCK_WIDTH = 20;
-        public static float TICK = 0.5f;
+        public static float TICK = 0.1f;
 
         public double TimeSinceLastTick { get; set; } = 0f;
 
