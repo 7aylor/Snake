@@ -20,12 +20,17 @@ namespace Snake
         };
 
         /// <summary>
-        /// checks if key was pressed
+        /// checks if any key was pressed
         /// </summary>
         /// <returns></returns>
-        public bool WasKeyPressed()
+        public bool WasAnyKeyPressed()
         {
             return Keyboard.GetState().GetPressedKeys().Length > 0;
+        }
+
+        public bool WasKeyPressed(Keys key)
+        {
+            return Keyboard.GetState().IsKeyDown(key);
         }
 
         /// <summary>

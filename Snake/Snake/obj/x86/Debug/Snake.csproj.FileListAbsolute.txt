@@ -21,3 +21,4 @@ C:\Users\7aylor\Desktop\Snake\Snake\Snake\obj\x86\Debug\Snake.csproj.CoreCompile
 C:\Users\7aylor\Desktop\Snake\Snake\Snake\obj\x86\Debug\Snake.csproj.CopyComplete
 C:\Users\7aylor\Desktop\Snake\Snake\Snake\obj\x86\Debug\Snake.exe
 C:\Users\7aylor\Desktop\Snake\Snake\Snake\obj\x86\Debug\Snake.pdb
+C:\Users\7aylor\Desktop\Snake\Snake\Snake\bin\Windows\x86\Debug\Content\default.xnb

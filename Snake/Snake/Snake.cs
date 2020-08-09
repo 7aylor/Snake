@@ -17,11 +17,15 @@ namespace Snake
         public List<BodyBlock> Body { get; set; }
         public int Score { get; set; }
         public Direction PrevDirection { get; set; }
+        public bool IsAlive { get; set; }
 
         public Snake()
         {
             Body = new List<BodyBlock>();
             PrevDirection = Direction.Right;
+            IsAlive = true;
+            Score = 0;
+
             for (int i = 8; i > 0; i--)
             {
                 //TODO: Make initialization vary with random start direction and axis
@@ -36,6 +40,8 @@ namespace Snake
         public void Move(Direction newDirection)
         {
             if (newDirection != Direction.None && IsValidDirection(newDirection)) PrevDirection = newDirection;
+
+            //TODO: handle bug where snake is in a corner and a button is pressed, making it go off the screen
 
             for (int i = Body.Count - 1; i > 0; i--)
             {
@@ -88,10 +94,17 @@ namespace Snake
                     }
                     break;
             }
+
+            if(Body.Select(x => x.Position).Where(x => x == Body[0].Position)?.Count() > 1)
+            {
+                IsAlive = false;
+                Body.Clear();
+            }
         }
 
         public void Grow()
         {
+            Score += GameManager.ScoreStep;
             Vector2 newBlockPos = Vector2.One;
             BodyBlock prevBlock = Body[Body.Count - 1];
             switch (prevBlock.Direction)
@@ -113,7 +126,14 @@ namespace Snake
 
             BodyBlock newBlock = new BodyBlock(prevBlock.Direction, newBlockPos);
 
+            //if the new block is in the same position as the head, game over
+            if(newBlock.Position == Body[0].Position)
+            {
+                IsAlive = false;
+            }
+
             Body.Add(newBlock);
+
         }
 
         /// <summary>

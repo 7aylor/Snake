@@ -12,8 +12,9 @@ namespace Snake
     public class GameManager
     {
         public const int BLOCK_WIDTH = 20;
-        public const int SCREEN_WIDTH = 800;
-        public const int SCREEN_HEIGHT = 600;
+        public const int SCREEN_WIDTH = 400;
+        public const int SCREEN_HEIGHT = 400;
+        public const int ScoreStep = 10;
         public static float TICK = 0.1f;
 
         public double TimeSinceLastTick { get; set; } = 0f;
@@ -44,5 +45,12 @@ namespace Snake
             return a == b;
         }
 
+        public void IncreaseSpeed()
+        {
+            if(TICK > 0.05)
+            {
+                TICK -= 0.005f;
+            }
+        }
     }
 }
