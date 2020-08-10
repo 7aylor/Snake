@@ -23,6 +23,7 @@ namespace Snake
         Apple apple;
         double timeToSpawnBadApple;
         double timeSinceLastBadAppleSpawned;
+        bool startOfGame;
 
         List<Apple> badApples;
 
@@ -46,6 +47,7 @@ namespace Snake
             badApples = new List<Apple>();
             timeToSpawnBadApple = new Random().Next(3, 8);
             timeSinceLastBadAppleSpawned = 0f;
+            startOfGame = true;
             base.Initialize();
         }
 
@@ -66,13 +68,11 @@ namespace Snake
         protected override void Update(GameTime gameTime)
         {
             //handle key press
-            if(snake.IsAlive )
+            if(snake.IsAlive)
             {
                 timeSinceLastBadAppleSpawned += gameTime.ElapsedGameTime.TotalSeconds;
                 if(inputManager.WasAnyKeyPressed())
                     newDirection = inputManager.GetDirectionFromValidInput();
-
-                Debug.WriteLine(timeSinceLastBadAppleSpawned);
 
                 if(gameManager.Tick(gameTime.ElapsedGameTime.TotalSeconds))
                 {
@@ -100,6 +100,7 @@ namespace Snake
                             {
                                 gameManager.IncreaseSpeed();
                                 badApples.Remove(badApple);
+                                snake.Score -= 5;
                                 break;
                             }
                         }
@@ -111,9 +112,12 @@ namespace Snake
                 if(inputManager.WasKeyPressed(Keys.Enter))
                 {
                     GameManager.TICK = 0.1f;
+                    gameManager.Speed = 1;
                     snake = new Snake();
                     badApples.Clear();
                     timeSinceLastBadAppleSpawned = 0;
+                    snake.IsAlive = true;
+                    startOfGame = false;
                 }
             }
 
@@ -130,7 +134,7 @@ namespace Snake
             if(snake.IsAlive)
             {
                 spriteBatch.DrawString(defaultFont, snake.Score.ToString(), Vector2.Zero, Color.White);
-                spriteBatch.DrawString(defaultFont, GameManager.TICK.ToString("0.00"), new Vector2(GameManager.SCREEN_WIDTH - 40, 0), Color.White);
+                spriteBatch.DrawString(defaultFont, gameManager.Speed.ToString(), new Vector2(GameManager.SCREEN_WIDTH - (10 * (gameManager.Speed.ToString().Length)), 0), Color.White);
 
                 foreach(var badApple in badApples)
                 {
@@ -140,6 +144,18 @@ namespace Snake
 
                 snake.Draw(spriteBatch, whitePixel);
 
+            }
+            else if(startOfGame)
+            {
+                spriteBatch.DrawString(defaultFont, "Snake and the Bad Apples", new Vector2((GameManager.SCREEN_WIDTH / 2) - 80, (GameManager.SCREEN_HEIGHT / 3)), Color.White);
+                spriteBatch.Draw(whitePixel, new Rectangle(140 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Red);
+                spriteBatch.Draw(whitePixel, new Rectangle(160 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Red);
+                spriteBatch.Draw(whitePixel, new Rectangle(180 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Red);
+                spriteBatch.Draw(whitePixel, new Rectangle(200 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Green);
+                spriteBatch.Draw(whitePixel, new Rectangle(220 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Red);
+                spriteBatch.Draw(whitePixel, new Rectangle(240 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Red);
+                spriteBatch.Draw(whitePixel, new Rectangle(260 + GameManager.BLOCK_WIDTH / 4, (GameManager.SCREEN_HEIGHT / 3) + 40 + GameManager.BLOCK_WIDTH / 4, GameManager.BLOCK_WIDTH / 2, GameManager.BLOCK_WIDTH / 2), Color.Red);
+                spriteBatch.DrawString(defaultFont, "Press enter to start", new Vector2((GameManager.SCREEN_WIDTH / 4) + 45, (GameManager.SCREEN_HEIGHT / 2) + 10), Color.White);
             }
             else
             {

@@ -17,11 +17,9 @@ namespace Snake
         public const int ScoreStep = 10;
         public static float TICK = 0.1f;
 
+        public int Speed { get; set; } = 1;
+
         public double TimeSinceLastTick { get; set; } = 0f;
-
-
-        public delegate void ItemPickup();
-        public event ItemPickup Pickup;
 
         /// <summary>
         /// Determines if the game "ticks" meaning all objects that should move will will move
@@ -47,9 +45,10 @@ namespace Snake
 
         public void IncreaseSpeed()
         {
-            if(TICK > 0.05)
+            if(TICK > 0.055f)
             {
                 TICK -= 0.005f;
+                Speed++;
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Snake
         {
             Body = new List<BodyBlock>();
             PrevDirection = Direction.Right;
-            IsAlive = true;
+            IsAlive = false;
             Score = 0;
 
             for (int i = 8; i > 0; i--)
@@ -74,7 +74,7 @@ namespace Snake
                     }
                     break;
                 case (Direction.Right):
-                    if (Body[0].Position.X + GameManager.BLOCK_WIDTH > GameManager.SCREEN_WIDTH)
+                    if (Body[0].Position.X + GameManager.BLOCK_WIDTH >= GameManager.SCREEN_WIDTH)
                     {
                         Body[0].Position = new Vector2(0, Body[0].Position.Y);
                     }
@@ -84,7 +84,7 @@ namespace Snake
                     }
                     break;
                 case (Direction.Down):
-                    if (Body[0].Position.Y + GameManager.BLOCK_WIDTH > GameManager.SCREEN_HEIGHT)
+                    if (Body[0].Position.Y + GameManager.BLOCK_WIDTH >= GameManager.SCREEN_HEIGHT)
                     {
                         Body[0].Position = new Vector2(Body[0].Position.X, 0);
                     }
